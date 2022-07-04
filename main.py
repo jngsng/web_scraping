@@ -9,10 +9,10 @@ saramin_soup = BeautifulSoup(saramin_result.text, "html.parser")
 
 pagination = saramin_soup.find("div",{"class":"pagination"})
 
-pages = pagination.find_all("a")
-spans = []
+links = pagination.find_all("a")
+pages = []
 
-for page in pages:
-  spans.append(page.find("span"))
+for link in links[:-1]:
+  pages.append(int(link.string))
 
-print(spans[0:-1])
+max_page = pages[-1]
