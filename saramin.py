@@ -28,4 +28,7 @@ def extract_saramin_pages():
 def extract_saramin_jobs(last_page):
   for page in range(last_page):
     result = requests.get(f"{URL1}recruitPage={page+1}{URL2}")
-    print(result.status_code)
+    soup = BeautifulSoup(result.text, "html.parser")
+    results = soup.find_all("div",{"class":"area_job"})
+    for result in results:
+      print(result.find("div",{"class":"title"}))
