@@ -26,10 +26,16 @@ def extract_saramin_pages():
 
 
 def extract_saramin_jobs(last_page):
-  for page in range(last_page):
-    result = requests.get(f"{URL1}recruitPage={page+1}{URL2}")
+  #for page in range(last_page):
+    result = requests.get(f"{URL1}recruitPage={1}{URL2}")
     soup = BeautifulSoup(result.text, "html.parser")
     results = soup.find_all("div",{"class":"area_job"})
-    #print(results)
+    results_corp = soup.find_all("div",{"class":"area_corp"})
+  
     for result in results:
-      print(result[-1])
+      title = (result.find("h2",{"class":"job_tit"})).find("a")["title"]
+      print(title)
+
+    for result in results_corp:
+      corp = (result.find("strong",{"class":"corp_name"}).find("a").string)
+      print(corp)
