@@ -38,4 +38,5 @@ def extract_saramin_jobs(last_page):
 
     for result in results_corp:
       corp = (result.find("strong",{"class":"corp_name"}).find("a").string)
+      corp = corp.strip()
       print(corp)
