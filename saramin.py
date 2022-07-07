@@ -24,6 +24,16 @@ def extract_saramin_pages():
   max_page = pages[-1]
   return(max_page)
 
+def extract_job(result, result_corp):
+  result = requests.get(f"{URL1}recruitPage={1}{URL2}")
+  soup = BeautifulSoup(result.text, "html.parser")
+  results = soup.find_all("div",{"class":"area_job"})
+  results_corp = soup.find_all("div",{"class":"area_corp"})
+
+  title = (results.find("h2",{"class":"job_tit"})).find("a")["title"]
+  corp = (results_corp.find("strong",{"class":"corp_name"}).find("a").string)
+  corp = corp.strip()
+  return{"title":title,"company":corp} 
 
 def extract_saramin_jobs(last_page):
   #for page in range(last_page):
@@ -32,11 +42,16 @@ def extract_saramin_jobs(last_page):
     results = soup.find_all("div",{"class":"area_job"})
     results_corp = soup.find_all("div",{"class":"area_corp"})
   
-    for result in results:
-      title = (result.find("h2",{"class":"job_tit"})).find("a")["title"]
-      print(title)
+    for result, result_corp in zip(results, results_corp):
+      job = extract_job(result, result_corp)
+      print(job)
       
-    for result in results_corp:
-      corp = (result.find("strong",{"class":"corp_name"}).find("a").string)
-      corp = corp.strip()
-      print(title, corp)
+      #title = (result.find("h2",{"class":"job_tit"})).find("a")["title"]
+      #corp = (result_corp.find("strong",{"class":"corp_name"}).find("a").string)
+      #corp = corp.strip()
+      #print(title,corp)
+      
+    #for result in results_corp:
+     # corp = (result.find("strong",{"class":"corp_name"}).find("a").string)
+      #corp = corp.strip()
+      #print(title, corp)
